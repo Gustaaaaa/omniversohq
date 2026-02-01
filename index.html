@@ -312,8 +312,8 @@
     <!-- HERO SECTION -->
     <section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-start pt-36 md:pt-44 pb-12 overflow-hidden bg-deepSpace">
         
-        <!-- Mobile Background (Absolute + Fixed Attachment for clipped Parallax) -->
-        <div class="absolute inset-0 w-1920 h-1080 bg-[url('https://i.imgur.com/ph6deoC.png')] bg-cover bg-center bg-no-repeat bg-fixed z-0 md:hidden opacity-50 blur-[2px]"></div>
+        <!-- Mobile Background (CORRIGIDO: Removido bg-fixed para evitar zoom e ajustado altura para parallax JS) -->
+        <div id="mobile-hero-bg" class="absolute top-0 left-0 w-full h-[120%] bg-[url('https://i.imgur.com/X3KJDIB.png')] bg-cover bg-center bg-no-repeat z-0 md:hidden opacity-50 blur-[2px] pointer-events-none"></div>
         
         <!-- Desktop Background (Attachment Fixed for Parallax) -->
         <div class="absolute inset-0 w-full h-full bg-[url('https://i.imgur.com/X3KJDIB.png')] bg-cover bg-center bg-no-repeat bg-fixed z-0 hidden md:block opacity-50 blur-[2px]"></div>
@@ -856,6 +856,19 @@
     </div>
 
     <script>
+        // SOLUÇÃO PARA PARALLAX MOBILE
+        // Como bg-fixed foi removido do mobile para evitar o zoom, usamos JS para simular o efeito
+        window.addEventListener('scroll', () => {
+            const mobileBg = document.getElementById('mobile-hero-bg');
+            // Verifica se o elemento existe e se estamos em uma tela menor que 768px (mobile)
+            if (mobileBg && window.innerWidth < 768) {
+                const scrollPosition = window.scrollY;
+                // Move o background um pouco mais devagar que o scroll para criar profundidade
+                // O fator 0.3 define a "velocidade" do parallax
+                mobileBg.style.transform = `translateY(${scrollPosition * 0.3}px)`;
+            }
+        });
+
         // Custom Context Menu Logic
         const contextMenu = document.getElementById('context-menu');
 
