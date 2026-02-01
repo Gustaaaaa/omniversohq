@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omniverso HQs | A Netflix dos Quadrinhos</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;600;700;800;900&family=Komika+Axis&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepSpace: '#05020a',
+                        spaceVoid: '#000000',
+                        electricCyan: '#00F0FF',
+                        vibrantMagenta: '#FF0055',
+                        goldenAge: '#FFD700',
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                        plasmaPurple: '#bc13fe',
+                        heroRed: '#FF0000',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif'],
+                        comic: ['Komika Axis', 'cursive'],
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'radial-gradient(circle at center, #1a0b2e 0%, #000000 70%)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'infinite-scroll': 'infinite-scroll 60s linear infinite', 
+                        'beam-rotate': 'beam-rotate 20s linear infinite',
+                        'breathe': 'breathe 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.8, filter: 'brightness(1)' },
+                            '50%': { opacity: 0.4, filter: 'brightness(1.5)' },
+                        },
+                        'infinite-scroll': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        'beam-rotate': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        },
+                        breathe: {
+                            '0%, 100%': { textShadow: '0 0 10px rgba(255,255,255,0.1)', opacity: '0.9' },
+                            '50%': { textShadow: '0 0 25px rgba(255,255,255,0.4)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #05020a;
+            color: white;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Image Protection */
+        img {
+            pointer-events: none; /* Prevents dragging image itself */
+            -webkit-touch-callout: none; /* Prevents long press menu on iOS */
+            -webkit-user-drag: none; /* Prevents drag on Webkit */
+            user-select: none; /* Prevents selection */
+        }
+
+        .halftone-bg {
+            background-image: radial-gradient(circle, #333 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(188, 19, 254, 0.5);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.15);
+            transform: translateY(-5px);
+        }
+
+        @keyframes textShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .text-animated-gradient {
+            background: linear-gradient(
+                to right,
+                #00F0FF 20%,
+                #bc13fe 40%,
+                #FF0055 60%,
+                #FFD700 80%,
+                #00F0FF 100%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShine 4s linear infinite;
+            display: inline-block;
+            filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+        }
+
+        .hero-vortex {
+            background: conic-gradient(from 0deg at 50% 50%, 
+                transparent 0deg, 
+                rgba(188, 19, 254, 0.1) 60deg, 
+                transparent 120deg, 
+                rgba(0, 240, 255, 0.1) 180deg, 
+                transparent 240deg, 
+                rgba(188, 19, 254, 0.1) 300deg, 
+                transparent 360deg);
+            filter: blur(40px);
+            animation: beam-rotate 20s linear infinite;
+        }
+
+        .card-3d-container { perspective: 1000px; }
+        .card-3d {
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transform-style: preserve-3d;
+        }
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+            z-index: 50;
+        }
+        
+        /* Shimmer Effect Animation */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+
+        .shimmer-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.5), 
+                transparent
+            );
+            transform: translateX(-200%) skewX(-15deg);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        .btn-neon {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-neon:hover {
+            transform: scale(1.05) skewX(-6deg);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            background-color: white;
+            color: black;
+        }
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            transition: 0.5s;
+        }
+        .btn-neon:hover::before { left: 100%; }
+
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .3s ease-in-out; }
+        @keyframes sweep {
+            0%    {opacity: 0; transform: translateY(-10px)}
+            100%  {opacity: 1; transform: translateY(0)}
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #05020a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #bc13fe; }
+
+        /* Standard Overlay for Mobile Legibility */
+        .comic-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+        }
+        
+        /* Desktop Hover Effects (Only on devices with hover) */
+        @media (min-width: 768px) {
+            /* Initial state for desktop: Hidden overlay */
+            .comic-overlay {
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            /* The Container */
+            .comic-card-container {
+                transition: transform 0.3s ease, border-color 0.3s ease;
+            }
+
+            /* On Hover: Show Overlay */
+            .comic-card-container:hover .comic-overlay {
+                opacity: 1;
+            }
+
+            /* On Hover: Elevate Card */
+            .comic-card-container:hover {
+                transform: translateY(-10px);
+                z-index: 20;
+            }
+
+            /* Specific Glows */
+            .comic-card-container.marvel:hover { border-color: #FF0055; box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3); }
+            .comic-card-container.dc:hover { border-color: #00F0FF; box-shadow: 0 10px 20px rgba(0, 240, 255, 0.3); }
+        }
+
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom Video Player Styles */
+        .video-progress-filled {
+            width: 0%;
+            height: 100%;
+            background-color: #00F0FF;
+            position: relative;
+            border-radius: 9999px;
+        }
+        .video-progress-thumb {
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        .group:hover .video-progress-thumb {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-electricCyan selection:text-black" oncontextmenu="return false;">
+
+    <div class="halftone-bg"></div>
+
+    <!-- Custom Context Menu -->
+    <div id="context-menu" class="hidden fixed z-[9999] w-48 bg-deepSpace/95 backdrop-blur-md border border-white/10 rounded-lg shadow-2xl shadow-electricCyan/20 overflow-hidden transform scale-95 transition-all duration-200 origin-top-left">
+        <ul class="text-sm text-gray-300">
+            <li class="px-4 py-3 hover:bg-white/10 hover:text-white cursor-pointer transition-colors border-b border-white/5 flex items-center gap-2" onclick="window.scrollTo(0,0)">
+                <i class="ph-fill ph-rocket-launch text-electricCyan"></i> Início
+            </li>
+            <li class="px-4 py-3 hover:bg-white/10 hover:text-white cursor-pointer transition-colors border-b border-white/5 flex items-center gap-2" onclick="window.location.href='#assinar'">
+                <i class="ph-fill ph-star text-goldenAge"></i> Assinar
+            </li>
+            <li class="px-4 py-3 hover:bg-white/10 hover:text-white cursor-pointer transition-colors flex items-center gap-2" onclick="location.reload()">
+                <i class="ph-fill ph-arrows-clockwise text-vibrantMagenta"></i> Recarregar
+            </li>
+        </ul>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed z-50 left-0 right-0 mx-auto w-[92%] max-w-6xl rounded-full transition-all duration-300 backdrop-blur-md bg-deepSpace/80 border border-white/10 shadow-2xl shadow-purple-900/10" style="top: 1.5rem;" id="navbar">
+        <div class="px-6 py-3 md:px-8 md:py-4 flex justify-between items-center">
+            <a href="#hero" class="flex items-center gap-2 group cursor-pointer">
+                <img src="https://i.imgur.com/ZsQVcns.png" alt="Omniverso HQs" class="h-8 md:h-10 w-auto object-contain transition-transform group-hover:scale-105">
+            </a>
+            <!-- CTA Button with Shimmer -->
+            <a href="#assinar" class="shimmer-effect flex items-center gap-2 px-6 py-2.5 bg-electricCyan/10 border border-electricCyan/50 text-electricCyan rounded-full transition-all duration-300 hover:bg-electricCyan hover:text-deepSpace hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] hover:scale-105 active:scale-95 font-display font-bold text-xs uppercase tracking-wider group">
+                <i class="ph-bold ph-lightning group-hover:animate-pulse"></i>
+                ADQUIRIR AGORA
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-start pt-36 md:pt-44 pb-12 overflow-hidden bg-deepSpace">
+        <div class="absolute inset-0 z-0">
+            <!-- Responsive Background Image -->
+            <div class="absolute inset-0 bg-[url('https://i.imgur.com/vLxr3Wm.png')] md:bg-[url('https://i.imgur.com/WBY2Bl9.png')] bg-cover bg-center bg-fixed opacity-40 mix-blend-overlay blur-[2px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/90 to-deepSpace/40"></div>
+        </div>
+
+        <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-0">
+            <div class="w-[150vw] h-[150vw] hero-vortex opacity-20"></div>
+        </div>
+
+        <div class="w-[92%] max-w-6xl mx-auto relative z-10 text-center flex flex-col items-center">
+            <div class="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur text-xs font-mono uppercase tracking-widest text-gray-300 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                <img src="https://flagcdn.com/br.svg" alt="Brasil" class="w-4 h-auto rounded-[1px] shadow-sm">
+                O Melhor Acervo de HQs do Brasil!
+            </div>
+
+            <div class="relative mb-8 w-full max-w-5xl mx-auto">
+                <div class="relative z-10 flex justify-center items-end gap-[-20px] md:gap-4 mt-8 md:mt-16 perspective-1000 card-3d-container">
+                    <div class="relative w-32 md:w-48 aspect-[2/3] transform -rotate-12 translate-y-4 md:translate-x-12 translate-x-4 brightness-50 hover:brightness-100 transition-all duration-500 card-3d rounded border border-white/10 bg-gray-900">
+                        <img src="https://i.imgur.com/HpjUaAs.png" alt="Capa Esquerda" class="w-full h-full object-cover rounded opacity-80">
+                    </div>
+                    <div class="relative w-44 md:w-64 aspect-[2/3] transform translate-y-[-20px] z-20 shadow-[0_0_50px_rgba(188,19,254,0.3)] card-3d rounded-lg border-2 border-white/20 bg-gray-900 group">
+                        <img src="https://i.imgur.com/18QHm26.png" alt="Capa Central" class="w-full h-full object-cover rounded-lg">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        <div class="absolute top-4 right-4 bg-electricCyan text-black font-bold text-xs px-2 py-1 rounded uppercase">Novo</div>
+                    </div>
+                    <div class="relative w-32 md:w-48 aspect-[2/3] transform rotate-12 translate-y-4 md:-translate-x-12 -translate-x-4 brightness-50 hover:brightness-100 transition-all duration-500 card-3d rounded border border-white/10 bg-gray-900">
+                        <img src="https://i.imgur.com/woUUr7X.png" alt="Capa Direita" class="w-full h-full object-cover rounded opacity-80">
+                    </div>
+                </div>
+
+                <h2 class="relative z-30 font-display font-black text-4xl md:text-6xl text-white mt-8 md:mt-12 text-shadow-lg drop-shadow-2xl leading-tight">
+                    <span class="text-goldenAge shadow-yellow-500/50 drop-shadow-[0_0_15px_rgba(255,215,0,0.5)]">+50.000</span> <span class="text-white">HQS DA</span> <span class="text-electricCyan drop-shadow-[0_0_10px_rgba(0,240,255,0.8)]">DC</span> <span class="text-white">E</span> <span class="text-heroRed drop-shadow-[0_0_10px_rgba(255,0,0,0.8)]">MARVEL</span>
+                </h2>
+            </div>
+
+            <p class="text-gray-400 text-lg md:text-xl max-w-xl mx-auto mb-8 leading-relaxed font-light">
+                Marvel Completa, DC Comics, HQs variadas e muito mais! Tudo organizado e em alta qualidade!
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center gap-6 relative z-50 pb-4">
+                <!-- Hero Button with Shimmer -->
+                <a href="#assinar" class="shimmer-effect btn-neon px-10 py-4 bg-electricCyan text-black font-display font-black text-lg uppercase tracking-wider rounded skew-x-[-6deg] hover:bg-white transition-colors shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                    <span class="block skew-x-[6deg]">Começar Leitura</span>
+                </a>
+                <a href="#tour" class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors font-medium group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-electricCyan group-hover:bg-electricCyan/10 transition-all">
+                        <i class="ph-fill ph-play text-xl group-hover:text-electricCyan"></i>
+                    </div>
+                    <span>Ver como funciona</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-0 w-full h-32 bg-gradient-to-t from-deepSpace to-transparent z-20 pointer-events-none"></div>
+    </section>
+
+    <div class="w-full h-px bg-gradient-to-r from-transparent via-electricCyan/50 to-transparent shadow-[0_0_15px_#00F0FF] opacity-70 relative z-20"></div>
+
+    <!-- MANIFESTO SECTION -->
+    <section class="py-24 relative bg-deepSpace overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-4xl opacity-10 pointer-events-none">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-electricCyan rounded-full blur-[120px]"></div>
+        </div>
+
+        <div class="w-[92%] max-w-4xl mx-auto relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/5 border border-white/10 text-electricCyan text-xs font-bold uppercase tracking-widest mb-6">Manifesto</span>
+            
+            <h2 class="font-display text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
+                Mais que um site.<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-electricCyan to-vibrantMagenta">O Santuário dos Quadrinhos.</span>
+            </h2>
+
+            <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                Cansamos de links quebrados e scans ilegíveis. Criamos a plataforma definitiva para quem leva HQs a sério.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-6 text-left mb-12">
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-electricCyan/50 transition-colors group">
+                    <div class="w-12 h-12 rounded-full bg-electricCyan/20 flex items-center justify-center text-electricCyan mb-4 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-skull text-2xl"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Morte aos Links Quebrados</h3>
+                    <p class="text-gray-400 text-sm">Nada de servidores russos suspeitos. Nossa biblioteca está sempre online e segura.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-vibrantMagenta/50 transition-colors group">
+                    <div class="w-12 h-12 rounded-full bg-vibrantMagenta/20 flex items-center justify-center text-vibrantMagenta mb-4 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-sort-ascending text-2xl"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Ordem no Caos</h3>
+                    <p class="text-gray-400 text-sm">Cronologias complexas organizadas por humanos, não robôs. Leia na ordem certa.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-goldenAge/50 transition-colors group">
+                    <div class="w-12 h-12 rounded-full bg-goldenAge/20 flex items-center justify-center text-goldenAge mb-4 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-crown text-2xl"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Tratamento VIP</h3>
+                    <p class="text-gray-400 text-sm">Scans remasterizados em 4K. Preto real, cores vivas e nitidez absurda.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-white/10 pt-12">
+                <div>
+                    <div class="text-3xl font-display font-bold text-white mb-1">50k+</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Edições</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-display font-bold text-white mb-1">4K</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Qualidade</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-display font-bold text-white mb-1">100%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Português</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-display font-bold text-white mb-1">24/7</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-widest">Acesso</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="py-24 relative bg-deepSpace" id="features">
+        <div class="w-[92%] max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 uppercase italic">
+                    <span class="text-electricCyan">Chega de garimpar</span> <br>links quebrados
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    A maioria dos sites de HQs são feios, desorganizados e cheios de vírus. O Omniverso é diferente. 
+                    Nós somos a experiência premium que sua coleção merece.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="ph-fill ph-books text-9xl text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-electricCyan/10 border border-electricCyan/30 rounded-xl flex items-center justify-center text-electricCyan mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph-bold ph-stack text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display uppercase tracking-wide text-white">Acervo Infinito</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        De Era de Ouro aos lançamentos da semana passada. Marvel, DC, Vertigo, Image e Mangás. Tudo em um só lugar.
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="ph-fill ph-sort-ascending text-9xl text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-vibrantMagenta/10 border border-vibrantMagenta/30 rounded-xl flex items-center justify-center text-vibrantMagenta mb-6 group-hover:scale-110 transition-transform">
+                        <i class="ph-bold ph-lightning text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display uppercase tracking-wide text-white">Ordem Cronológica</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Não sabe por onde começar a ler X-Men? Nós organizamos as sagas na ordem correta de leitura. Sem confusão.
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="ph-fill ph-diamond text-9xl text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-goldenAge/10 border border-goldenAge/30 rounded-xl flex items-center justify-center text-goldenAge mb-6 group-hover:scale-100 transition-transform">
+                        <i class="ph-bold ph-eye text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 font-display uppercase tracking-wide text-white">Qualidade 4K</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Arquivos remasterizados digitalmente. Cores vibrantes, pretos profundos e letras nítidas. Perfeito para tablets.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APP VIDEO SHOWCASE (Custom Player) -->
+    <section class="py-20 relative bg-deepSpace border-t border-white/5">
+        <div class="w-[92%] max-w-2xl mx-auto text-center">
+             <div class="mb-12">
+                <span class="text-goldenAge font-bold tracking-widest text-xs uppercase">Interface Premium</span>
+                <h2 class="font-display text-3xl md:text-5xl font-bold mt-2 text-white">Por Dentro do Omniverso</h2>
+            </div>
+            
+            <div class="relative group rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-electricCyan/10 bg-black h-[650px] md:h-[800px]" id="video-container">
+                <video class="w-full h-full object-cover" id="app-video" playsinline poster="https://i.imgur.com/K5JNB4T.mp4?#t=0.1">
+                    <source src="https://i.imgur.com/K5JNB4T.mp4" type="video/mp4">
+                    Seu navegador não suporta a tag de vídeo.
+                </video>
+                
+                <!-- Center Play Button -->
+                <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all cursor-pointer z-10" id="video-overlay">
+                    <button class="w-20 h-20 rounded-full bg-electricCyan/90 text-deepSpace flex items-center justify-center transform transition-transform hover:scale-110 shadow-[0_0_30px_rgba(0,240,255,0.6)] animate-pulse-glow">
+                        <i class="ph-fill ph-play text-4xl ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Custom Controls Bar -->
+                <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/90 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col gap-2 z-20" id="video-controls">
+                    <!-- Progress Bar -->
+                    <div class="w-full h-1 bg-white/20 rounded-full cursor-pointer relative group/progress" id="progress-container">
+                        <div class="video-progress-filled" id="progress-bar">
+                             <div class="video-progress-thumb"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-white mt-1">
+                        <div class="flex items-center gap-4">
+                            <button id="play-pause-btn" class="hover:text-electricCyan transition-colors"><i class="ph-fill ph-play text-xl"></i></button>
+                            <span class="text-xs font-mono text-gray-300" id="time-display">00:00 / 00:00</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button id="mute-btn" class="hover:text-electricCyan transition-colors"><i class="ph-fill ph-speaker-high text-xl"></i></button>
+                            <button id="fullscreen-btn" class="hover:text-electricCyan transition-colors"><i class="ph-fill ph-corners-out text-xl"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End Video CTA -->
+                <div id="video-end-cta" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-30 hidden opacity-0 transition-opacity duration-500">
+                    <h3 class="font-display font-bold text-3xl text-white mb-4">Gostou do que viu?</h3>
+                    <a href="#assinar" class="px-8 py-3 bg-electricCyan text-black font-bold rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(0,240,255,0.4)]">
+                        QUERO MEU ACESSO
+                    </a>
+                    <button id="replay-btn" class="mt-4 text-gray-400 hover:text-white text-sm flex items-center gap-1 transition-colors">
+                        <i class="ph-fill ph-arrow-counter-clockwise"></i> Assistir Novamente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Categories Section -->
+    <section class="py-20 relative bg-deepSpace/50" id="categories">
+        <div class="w-[92%] max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-vibrantMagenta font-bold tracking-widest text-xs uppercase">Universo Expandido</span>
+                <h3 class="font-display text-3xl font-bold text-white mt-2">Explore os Universos</h3>
+                <p class="text-gray-400 text-sm mt-2">Clique para ver o que te espera</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button onclick="showCategory('marvel')" class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-red-600 hover:border-red-600 hover:text-white text-gray-300 transition-all cursor-pointer font-bold uppercase tracking-wider text-sm">Marvel</button>
+                <button onclick="showCategory('dc')" class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-blue-600 hover:border-blue-600 hover:text-white text-gray-300 transition-all cursor-pointer font-bold uppercase tracking-wider text-sm">DC Comics</button>
+                <button onclick="showCategory('manga')" class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-purple-600 hover:border-purple-600 hover:text-white text-gray-300 transition-all cursor-pointer font-bold uppercase tracking-wider text-sm">Mangás</button>
+                <button onclick="showCategory('nacional')" class="px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-300 transition-all cursor-pointer font-bold uppercase tracking-wider text-sm">Nacionais</button>
+            </div>
+
+            <div id="category-content" class="glass-card p-8 rounded-2xl min-h-[150px] flex items-center justify-center text-center">
+                <p class="text-gray-400 italic">Selecione uma categoria acima para ver os destaques.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scrollable & Draggable Highlights (JS Controlled) -->
+    <section class="py-20 bg-gradient-to-b from-deepSpace to-[#0a0510] border-t border-white/5 overflow-hidden">
+        <div class="w-[92%] max-w-6xl mx-auto mb-12 text-center">
+            <span class="text-vibrantMagenta font-bold tracking-widest text-sm uppercase">Destaques do Mês</span>
+            <h2 class="font-display text-4xl font-bold mt-2">Sagas Essenciais</h2>
+            <p class="text-xs text-gray-500 mt-2">Arraste para explorar</p>
+        </div>
+
+        <div class="w-[92%] max-w-6xl mx-auto overflow-hidden relative group rounded-xl" id="highlights-wrapper">
+            <div id="highlights-track" class="flex gap-6 py-8 px-4 w-full overflow-x-auto hide-scroll cursor-grab active:cursor-grabbing">
+               <!-- Content injected via JS -->
+            </div>
+            <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-deepSpace to-transparent pointer-events-none"></div>
+            <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-deepSpace to-transparent pointer-events-none"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section (Fade Carousel) -->
+    <section class="py-24 relative bg-deepSpace border-t border-white/5 overflow-hidden">
+        <div class="w-[92%] max-w-6xl mx-auto mb-16 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-electricCyan/10 border border-electricCyan/30 text-electricCyan text-xs font-bold uppercase tracking-widest mb-4 shadow-[0_0_10px_rgba(0,240,255,0.2)]">+3000 Pessoas Satisfeitas</span>
+            <h2 class="font-display text-4xl font-bold mb-4 uppercase text-white">O que dizem os leitores</h2>
+            <p class="text-gray-400">Veja quem já está explorando o multiverso</p>
+        </div>
+
+        <!-- Carousel Container -->
+        <div class="relative w-full max-w-2xl mx-auto h-[500px] md:h-[600px]" id="testimonials-carousel">
+            <!-- Images will be injected here via JS -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <div class="w-12 h-12 border-4 border-electricCyan border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        </div>
+        
+        <!-- Indicators -->
+        <div class="flex justify-center gap-3 mt-6" id="testimonials-indicators">
+            <!-- Indicators injected via JS -->
+        </div>
+    </section>
+
+    <!-- Pricing Section (UPDATED WITH BASIC PLAN) -->
+    <section id="assinar" class="py-24 relative overflow-hidden bg-deepSpace border-t border-white/5">
+        <!-- Decoration -->
+        <div class="absolute inset-0 bg-gradient-to-r from-electricCyan/5 via-deepSpace to-vibrantMagenta/5 pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 40px 40px;"></div>
+        
+        <div class="w-[92%] max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                 <h2 class="font-display text-4xl md:text-6xl font-bold mb-4 italic uppercase">Desbloqueie o <br><span class="text-goldenAge">Omniverso</span></h2>
+                 <p class="text-gray-300 text-lg max-w-xl mx-auto">
+                    Escolha o plano ideal para sua jornada. Sem mensalidades escondidas.
+                </p>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="grid md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
+                
+                <!-- Basic Plan -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 relative group hover:border-gray-500/50 transition-all hover:-translate-y-1">
+                     <h3 class="text-gray-400 font-bold uppercase tracking-widest text-sm mb-4">Plano Básico</h3>
+                     <div class="flex items-end gap-1 mb-6">
+                        <span class="text-4xl font-display font-bold text-white">R$ 9,90</span>
+                        <span class="text-gray-500 text-sm mb-1">/ mês</span>
+                     </div>
+                     <!-- Features -->
+                     <ul class="space-y-4 text-sm text-gray-400 mb-8">
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-gray-500 text-lg"></i> Acesso ao Site</li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-x-circle text-red-500 text-lg"></i> <span class="opacity-50 line-through">Leitura Offline</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-x-circle text-red-500 text-lg"></i> <span class="opacity-50 line-through">Acesso Vitalício</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-x-circle text-red-500 text-lg"></i> <span class="opacity-50 line-through">Atualizações Diárias</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-bold ph-x-circle text-red-500 text-lg"></i> <span class="opacity-50 line-through">Suporte Prioritário</span></li>
+                     </ul>
+                     <a href="#" class="block w-full py-3 rounded-lg border border-white/20 text-white text-center font-bold hover:bg-white/10 transition-all uppercase tracking-wider text-sm">Assinar Mensal</a>
+                </div>
+
+                <!-- Omniverso Plan (Highlight) -->
+                <div class="bg-gradient-to-b from-electricCyan/5 to-deepSpace border border-electricCyan/50 rounded-2xl p-8 relative transform md:scale-105 shadow-2xl shadow-electricCyan/10 z-10">
+                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-goldenAge text-black text-xs font-black uppercase px-4 py-1.5 rounded-full tracking-widest shadow-lg shadow-yellow-500/20">
+                        Mais Popular
+                     </div>
+                     <h3 class="text-electricCyan font-bold uppercase tracking-widest text-sm mb-2">Plano Omniverso</h3>
+                     <div class="flex items-center gap-2 mb-2">
+                         <span class="bg-green-500/20 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase border border-green-500/30">Pagamento Único</span>
+                     </div>
+                     <div class="flex items-end gap-1 mb-8">
+                        <span class="text-6xl font-display font-bold text-white">R$ 29,90</span>
+                     </div>
+                     <!-- Features -->
+                     <ul class="space-y-4 text-sm text-gray-300 mb-8">
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-electricCyan text-lg"></i> <span class="font-bold text-white">Acesso Ilimitado</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-electricCyan text-lg"></i> Leitura Offline (Download)</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-electricCyan text-lg"></i> <span class="text-goldenAge font-bold">Acesso Vitalício</span></li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-electricCyan text-lg"></i> Atualizações Diárias</li>
+                        <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-electricCyan text-lg"></i> +50.000 HQs</li>
+                     </ul>
+                     <!-- Pricing Button with Shimmer -->
+                     <button class="shimmer-effect w-full py-4 bg-gradient-to-r from-goldenAge to-amber-600 rounded-lg text-black font-black text-lg uppercase tracking-wider shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group">
+                        Adquirir Agora <i class="ph-bold ph-lightning group-hover:animate-pulse"></i>
+                     </button>
+                     <p class="text-center text-xs text-gray-500 mt-4">*Sem taxas adicionais. Pague uma vez, use para sempre.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CATALOG GRID SECTION (MOVED AFTER ASSINAR) -->
+    <section class="py-24 relative bg-deepSpace border-t border-white/5">
+        <div class="w-[92%] max-w-6xl mx-auto mb-16 text-center">
+            <h2 class="font-display text-4xl font-bold mb-4 uppercase text-white">Catálogo em Destaque</h2>
+            <p class="text-gray-400">Uma pequena amostra do que te espera no Omniverso</p>
+        </div>
+        <div class="w-[92%] max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <!-- Marvel Items -->
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-vibrantMagenta transition-colors cursor-pointer comic-card-container marvel">
+                <img src="https://i.imgur.com/d5N76SV.png" alt="Guerra Infinita" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-vibrantMagenta text-[10px] font-bold uppercase tracking-widest mb-1">Marvel</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Guerra Infinita</h3>
+                </div>
+            </div>
+            <!-- More Items... -->
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-vibrantMagenta transition-colors cursor-pointer comic-card-container marvel">
+                <img src="https://i.imgur.com/6UVCivH.png" alt="Homem Aranha" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-vibrantMagenta text-[10px] font-bold uppercase tracking-widest mb-1">Marvel</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Homem Aranha</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-vibrantMagenta transition-colors cursor-pointer comic-card-container marvel">
+                <img src="https://i.imgur.com/6676mTZ.png" alt="Doutor Estranho" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-vibrantMagenta text-[10px] font-bold uppercase tracking-widest mb-1">Marvel</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Doutor Estranho</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-vibrantMagenta transition-colors cursor-pointer comic-card-container marvel">
+                <img src="https://i.imgur.com/z0rnQJx.png" alt="Guerra Secreta" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-vibrantMagenta text-[10px] font-bold uppercase tracking-widest mb-1">Marvel</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Guerra Secreta</h3>
+                </div>
+            </div>
+            
+            <!-- DC Items -->
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-electricCyan transition-colors cursor-pointer comic-card-container dc">
+                <img src="https://i.imgur.com/ozabVbD.png" alt="Lanterna Verde" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-electricCyan text-[10px] font-bold uppercase tracking-widest mb-1">DC Comics</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Lanterna Verde</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-electricCyan transition-colors cursor-pointer comic-card-container dc">
+                <img src="https://i.imgur.com/gr192gm.png" alt="Batman e Robin" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-electricCyan text-[10px] font-bold uppercase tracking-widest mb-1">DC Comics</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Batman e Robin</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-electricCyan transition-colors cursor-pointer comic-card-container dc">
+                <img src="https://i.imgur.com/hTZKc9H.png" alt="Liga da Justiça (2025)" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-electricCyan text-[10px] font-bold uppercase tracking-widest mb-1">DC Comics</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Liga da Justiça</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-electricCyan transition-colors cursor-pointer comic-card-container dc">
+                <img src="https://i.imgur.com/IZsisba.png" alt="Batman Detetive" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-electricCyan text-[10px] font-bold uppercase tracking-widest mb-1">DC Comics</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Batman Detetive</h3>
+                </div>
+            </div>
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 hover:border-electricCyan transition-colors cursor-pointer comic-card-container dc">
+                <img src="https://i.imgur.com/yoL5AXj.png" alt="Superman" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                <div class="absolute inset-0 comic-overlay flex flex-col justify-end p-4">
+                    <span class="text-electricCyan text-[10px] font-bold uppercase tracking-widest mb-1">DC Comics</span>
+                    <h3 class="font-bold text-white text-sm leading-tight">Superman</h3>
+                </div>
+            </div>
+
+            <!-- "E Muito Mais" Card -->
+            <div class="group relative aspect-[2/3] rounded-lg overflow-hidden border border-white/20 bg-white/5 hover:border-goldenAge transition-colors cursor-pointer flex flex-col items-center justify-center p-4 text-center">
+                <div class="w-16 h-16 rounded-full bg-goldenAge/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <i class="ph-bold ph-plus text-goldenAge text-3xl"></i>
+                </div>
+                <h3 class="font-display font-bold text-white text-lg uppercase leading-tight mb-2">E Muito<br>Mais!</h3>
+                <p class="text-xs text-gray-400">Milhares de outras HQs esperam por você.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee Section -->
+    <section class="py-16 bg-deepSpace border-t border-white/5">
+        <div class="w-[92%] max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-500/10 text-green-500 mb-6">
+                <i class="ph-fill ph-shield-check text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">Garantia Blindada de 7 Dias</h3>
+            <p class="text-gray-400 max-w-xl mx-auto">
+                Teste o Omniverso sem riscos. Se você não gostar do acervo ou da experiência, devolvemos 100% do seu dinheiro. Sem perguntas, sem burocracia.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 relative bg-deepSpace">
+        <div class="w-[92%] max-w-3xl mx-auto">
+            <h2 class="text-3xl font-display font-bold text-center mb-12 text-white">Perguntas Frequentes</h2>
+            
+            <div class="space-y-4">
+                <details class="glass-card rounded-xl group p-4 cursor-pointer open:bg-white/5 transition-all border border-white/5">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white">
+                        <span>Como funciona o acesso?</span>
+                        <span class="group-open:rotate-180 transition-transform"><i class="ph-bold ph-caret-down text-electricCyan"></i></span>
+                    </summary>
+                    <div class="pt-4 text-gray-400 text-sm leading-relaxed border-t border-white/10 mt-4">
+                        O acesso é imediato após a confirmação do pagamento. Você receberá um login e senha para acessar nossa plataforma web e o aplicativo exclusivo.
+                    </div>
+                </details>
+                <details class="glass-card rounded-xl group p-4 cursor-pointer open:bg-white/5 transition-all border border-white/5">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white">
+                        <span>Posso baixar as HQs?</span>
+                        <span class="group-open:rotate-180 transition-transform"><i class="ph-bold ph-caret-down text-electricCyan"></i></span>
+                    </summary>
+                    <div class="pt-4 text-gray-400 text-sm leading-relaxed border-t border-white/10 mt-4">
+                        Sim! Todos os assinantes do Plano Mestre podem baixar as edições em formato PDF ou CBR para ler offline no tablet, celular ou Kindle.
+                    </div>
+                </details>
+                <details class="glass-card rounded-xl group p-4 cursor-pointer open:bg-white/5 transition-all border border-white/5">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white">
+                        <span>Tem fidelidade?</span>
+                        <span class="group-open:rotate-180 transition-transform"><i class="ph-bold ph-caret-down text-electricCyan"></i></span>
+                    </summary>
+                    <div class="pt-4 text-gray-400 text-sm leading-relaxed border-t border-white/10 mt-4">
+                        Nenhuma. Você pode cancelar sua assinatura a qualquer momento através do painel do usuário. Sem multas e sem letras miúdas.
+                    </div>
+                </details>
+                 <details class="glass-card rounded-xl group p-4 cursor-pointer open:bg-white/5 transition-all border border-white/5">
+                    <summary class="flex justify-between items-center font-bold text-lg text-white">
+                        <span>O acervo é atualizado?</span>
+                        <span class="group-open:rotate-180 transition-transform"><i class="ph-bold ph-caret-down text-electricCyan"></i></span>
+                    </summary>
+                    <div class="pt-4 text-gray-400 text-sm leading-relaxed border-t border-white/10 mt-4">
+                        Diariamente. Nossa equipe de curadoria adiciona novas sagas clássicas e lançamentos recentes todos os dias da semana.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-black border-t border-white/10">
+        <div class="container mx-auto px-6 flex flex-col items-center justify-center gap-4">
+             <img src="https://i.imgur.com/ZsQVcns.png" alt="Omniverso HQs" class="h-8 grayscale hover:grayscale-0 transition-all duration-300 opacity-90 hover:opacity-100">
+             <p class="text-gray-500 text-xs text-center">© 2026 Omniverso HQs. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Context Menu Logic
+        const contextMenu = document.getElementById('context-menu');
+
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const { clientX: mouseX, clientY: mouseY } = e;
+
+            contextMenu.style.top = `${mouseY}px`;
+            contextMenu.style.left = `${mouseX}px`;
+            contextMenu.classList.remove('hidden');
+            // Little animation via CSS classes
+            requestAnimationFrame(() => {
+                 contextMenu.classList.add('scale-100', 'opacity-100');
+                 contextMenu.classList.remove('scale-95', 'opacity-0');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            // If click is outside, hide it
+            if (!contextMenu.contains(e.target)) {
+                 contextMenu.classList.add('hidden', 'scale-95', 'opacity-0');
+                 contextMenu.classList.remove('scale-100', 'opacity-100');
+            }
+        });
+
+        // Interactive Categories
+        const categories = {
+            marvel: [
+                "X-Men: Saga da Fênix Negra", "Guerras Secretas (Original)", "Homem-Aranha: A Última Caçada de Kraven", 
+                "Demolidor: A Queda de Murdock", "Vingadores: A Queda", "Guerra Civil", "Planeta Hulk", "Velho Logan"
+            ],
+            dc: [
+                "Batman: O Cavaleiro das Trevas", "Crise nas Infinitas Terras", "Reino do Amanhã", "All-Star Superman",
+                "Batman: Ano Um", "A Piada Mortal", "Flashpoint", "Lanterna Verde: A Noite Mais Densa"
+            ],
+            manga: [
+                "Akira (Edição Colorida)", "Berserk", "Monster", "Vagabond", "Pluto", "20th Century Boys", "Boa Noite Punpun"
+            ],
+            nacional: [
+                "Angola Janga", "Daytripper", "Turma da Mônica: Laços", "Astronauta: Magnetar", "Piteco: Ingá"
+            ]
+        };
+
+        function showCategory(cat) {
+            const contentDiv = document.getElementById('category-content');
+            const list = categories[cat];
+            if (!list) return;
+
+            contentDiv.style.opacity = 0;
+            setTimeout(() => {
+                let html = `<div class="w-full text-left">
+                    <h4 class="text-electricCyan font-bold uppercase tracking-wider mb-4 border-b border-white/10 pb-2">Destaques da Coleção</h4>
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-2">`;
+                list.forEach(item => {
+                    html += `<div class="flex items-center gap-2 text-gray-300 text-sm"><i class="ph-fill ph-caret-right text-vibrantMagenta"></i> ${item}</div>`;
+                });
+                html += `</div></div>`;
+                contentDiv.innerHTML = html;
+                contentDiv.style.opacity = 1;
+            }, 300);
+        }
+
+        // --- INFINITE DRAGGABLE SCROLL CLASS ---
+        class InfiniteDraggableScroll {
+            constructor(trackId, data, renderFn, speed = 0.5) {
+                this.track = document.getElementById(trackId);
+                this.data = data;
+                this.renderFn = renderFn;
+                this.speed = speed;
+                
+                this.isDragging = false;
+                this.startX = 0;
+                this.scrollLeft = 0;
+                this.animationId = null;
+                
+                this.init();
+            }
+
+            init() {
+                // Populate track with 4x duplication for infinite effect
+                const content = this.data.map(this.renderFn).join('');
+                this.track.innerHTML = content + content + content + content;
+
+                // Event Listeners
+                this.track.addEventListener('mousedown', (e) => this.startDrag(e));
+                
+                // Stop scrolling immediately on mouse enter
+                this.track.addEventListener('mouseenter', () => this.stopAutoScroll());
+                
+                // Restart only if not dragging when leaving
+                this.track.addEventListener('mouseleave', () => {
+                    this.isDragging = false;
+                    this.track.classList.remove('cursor-grabbing');
+                    this.startAutoScroll();
+                });
+                
+                this.track.addEventListener('mouseup', () => this.endDrag());
+                this.track.addEventListener('mousemove', (e) => this.drag(e));
+                
+                // Touch support
+                this.track.addEventListener('touchstart', () => this.stopAutoScroll());
+                this.track.addEventListener('touchend', () => this.startAutoScroll());
+
+                this.startAutoScroll();
+            }
+
+            startAutoScroll() {
+                const animate = () => {
+                    if (!this.isDragging) {
+                        this.track.scrollLeft += this.speed;
+                        // Seamless Loop Reset: When scrolled past 1/4 (first set), snap back
+                        if (this.track.scrollLeft >= this.track.scrollWidth / 4) {
+                            this.track.scrollLeft -= this.track.scrollWidth / 4;
+                        }
+                    }
+                    this.animationId = requestAnimationFrame(animate);
+                };
+                cancelAnimationFrame(this.animationId);
+                animate();
+            }
+
+            stopAutoScroll() {
+                cancelAnimationFrame(this.animationId);
+            }
+
+            startDrag(e) {
+                this.isDragging = true;
+                this.track.classList.add('cursor-grabbing');
+                this.startX = e.pageX - this.track.offsetLeft;
+                this.scrollLeft = this.track.scrollLeft;
+                this.stopAutoScroll();
+            }
+
+            endDrag() {
+                if (!this.isDragging) return;
+                this.isDragging = false;
+                this.track.classList.remove('cursor-grabbing');
+                this.startAutoScroll();
+            }
+
+            drag(e) {
+                if (!this.isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - this.track.offsetLeft;
+                const walk = (x - this.startX) * 2; // Drag multiplier
+                this.track.scrollLeft = this.scrollLeft - walk;
+            }
+        }
+
+        // --- DATA & RENDERERS ---
+
+        const highlightsData = [
+            { img: 'https://i.imgur.com/d5N76SV.png', title: 'Guerra Infinita', cat: 'Marvel' },
+            { img: 'https://i.imgur.com/6UVCivH.png', title: 'Homem Aranha', cat: 'Marvel' },
+            { img: 'https://i.imgur.com/6676mTZ.png', title: 'Doutor Estranho', cat: 'Marvel' },
+            { img: 'https://i.imgur.com/z0rnQJx.png', title: 'Guerra Secreta', cat: 'Marvel' },
+            { img: 'https://i.imgur.com/ozabVbD.png', title: 'Lanterna Verde', cat: 'DC Comics' },
+            { img: 'https://i.imgur.com/gr192gm.png', title: 'Batman e Robin', cat: 'DC Comics' },
+            { img: 'https://i.imgur.com/hTZKc9H.png', title: 'Liga da Justiça', cat: 'DC Comics' },
+            { img: 'https://i.imgur.com/IZsisba.png', title: 'Batman Detetive', cat: 'DC Comics' },
+            { img: 'https://i.imgur.com/yoL5AXj.png', title: 'Superman', cat: 'DC Comics' }
+        ];
+
+        const renderHighlightCard = (item) => `
+            <div class="w-56 md:w-64 flex-none relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 shadow-lg cursor-pointer comic-card-container ${item.cat.includes('Marvel') ? 'marvel' : 'dc'}">
+                <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover select-none pointer-events-none">
+                <div class="absolute inset-0 flex flex-col justify-end p-6 comic-overlay">
+                    <span class="${item.cat.includes('Marvel') ? 'text-vibrantMagenta' : 'text-electricCyan'} text-xs font-bold uppercase tracking-widest mb-1">${item.cat}</span>
+                    <h3 class="font-bold text-white text-xl leading-tight">${item.title}</h3>
+                </div>
+            </div>
+        `;
+
+        // UPDATED TESTIMONIALS DATA
+        const testimonialsData = [
+            "https://i.imgur.com/067tK0L.png",
+            "https://i.imgur.com/moZ0zKP.png",
+            "https://i.imgur.com/dLPjbGe.png",
+            "https://i.imgur.com/IxYhbIx.png"
+        ];
+
+        // Custom Carousel Logic for Testimonials
+        function initTestimonialCarousel() {
+            const container = document.getElementById('testimonials-carousel');
+            const indicatorsContainer = document.getElementById('testimonials-indicators');
+            if(!container) return;
+
+            container.innerHTML = ''; // Clear loading
+            let currentIndex = 0;
+            const slides = [];
+            const indicators = [];
+
+            // Create Slides
+            testimonialsData.forEach((imgSrc, index) => {
+                const slide = document.createElement('div');
+                slide.className = `absolute inset-0 flex items-center justify-center transition-all duration-700 ease-in-out transform ${index === 0 ? 'opacity-100 scale-100 z-20' : 'opacity-0 scale-95 z-10'}`;
+                slide.innerHTML = `
+                    <div class="relative w-full max-w-md mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/50 bg-deepSpace" style="height: auto; max-height: 100%;">
+                        <img src="${imgSrc}" alt="Avaliação ${index + 1}" class="w-full h-full object-contain select-none pointer-events-none" style="max-height: 100%;">
+                    </div>
+                `;
+                container.appendChild(slide);
+                slides.push(slide);
+
+                // Indicator
+                const dot = document.createElement('button');
+                dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${index === 0 ? 'bg-electricCyan w-8' : 'bg-white/20 hover:bg-white/40'}`;
+                dot.onclick = () => {
+                    goToSlide(index);
+                    resetTimer();
+                };
+                indicatorsContainer.appendChild(dot);
+                indicators.push(dot);
+            });
+
+            function goToSlide(index) {
+                // Hide current
+                slides[currentIndex].classList.remove('opacity-100', 'scale-100', 'z-20');
+                slides[currentIndex].classList.add('opacity-0', 'scale-95', 'z-10');
+                
+                currentIndex = index;
+                
+                // Show new
+                slides[currentIndex].classList.remove('opacity-0', 'scale-95', 'z-10');
+                slides[currentIndex].classList.add('opacity-100', 'scale-100', 'z-20');
+
+                // Update indicators
+                indicators.forEach((dot, i) => {
+                    if (i === currentIndex) {
+                        dot.className = 'w-8 h-3 rounded-full bg-electricCyan transition-all duration-300';
+                    } else {
+                        dot.className = 'w-3 h-3 rounded-full bg-white/20 hover:bg-white/40 transition-all duration-300';
+                    }
+                });
+            }
+
+            function nextSlide() {
+                const nextIndex = (currentIndex + 1) % testimonialsData.length;
+                goToSlide(nextIndex);
+            }
+
+            let interval;
+            
+            function startTimer() {
+                interval = setInterval(nextSlide, 2500); // 2.5 seconds
+            }
+            
+            function resetTimer() {
+                clearInterval(interval);
+                startTimer();
+            }
+
+            // Auto-play control
+            startTimer();
+            
+            // Pause on hover
+            container.addEventListener('mouseenter', () => clearInterval(interval));
+            container.addEventListener('mouseleave', () => startTimer());
+        }
+
+        // Initialize Scrolls
+        new InfiniteDraggableScroll('highlights-track', highlightsData, renderHighlightCard, 0.5);
+        initTestimonialCarousel();
+
+        // Custom Video Controls Script
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('app-video');
+        const videoOverlay = document.getElementById('video-overlay');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const muteBtn = document.getElementById('mute-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+        const timeDisplay = document.getElementById('time-display');
+
+        // End CTA Elements
+        const endCta = document.getElementById('video-end-cta');
+        const replayBtn = document.getElementById('replay-btn');
+
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                videoOverlay.classList.add('opacity-0', 'pointer-events-none');
+                playPauseBtn.innerHTML = '<i class="ph-fill ph-pause text-xl"></i>';
+                // Hide CTA if visible
+                if (!endCta.classList.contains('hidden')) {
+                     endCta.classList.add('opacity-0');
+                     setTimeout(() => endCta.classList.add('hidden'), 500);
+                }
+            } else {
+                video.pause();
+                videoOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                playPauseBtn.innerHTML = '<i class="ph-fill ph-play text-xl"></i>';
+            }
+        }
+
+        // Toggle play on overlay click AND video click
+        videoOverlay.addEventListener('click', togglePlay);
+        video.addEventListener('click', togglePlay);
+        playPauseBtn.addEventListener('click', togglePlay);
+
+        // Show CTA on End
+        video.addEventListener('ended', () => {
+            endCta.classList.remove('hidden');
+            // Small delay for fade in
+            requestAnimationFrame(() => endCta.classList.remove('opacity-0'));
+            // Exit fullscreen if active
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(err => console.log(err));
+            }
+            // Update play button icon
+            playPauseBtn.innerHTML = '<i class="ph-fill ph-play text-xl"></i>';
+            videoOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        });
+
+        // Replay Logic
+        replayBtn.addEventListener('click', () => {
+             endCta.classList.add('opacity-0');
+             setTimeout(() => {
+                 endCta.classList.add('hidden');
+                 video.currentTime = 0;
+                 video.play();
+                 videoOverlay.classList.add('opacity-0', 'pointer-events-none');
+                 playPauseBtn.innerHTML = '<i class="ph-fill ph-pause text-xl"></i>';
+             }, 300);
+        });
+
+        muteBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            muteBtn.innerHTML = video.muted ? '<i class="ph-fill ph-speaker-slash text-xl"></i>' : '<i class="ph-fill ph-speaker-high text-xl"></i>';
+        });
+
+        fullscreenBtn.addEventListener('click', () => {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) { /* Safari */
+                video.webkitRequestFullscreen();
+            }
+        });
+
+        video.addEventListener('timeupdate', () => {
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // Time Display
+            const currentMins = Math.floor(video.currentTime / 60);
+            const currentSecs = Math.floor(video.currentTime % 60);
+            const totalMins = Math.floor(video.duration / 60) || 0;
+            const totalSecs = Math.floor(video.duration % 60) || 0;
+            
+            timeDisplay.textContent = `${currentMins}:${currentSecs < 10 ? '0' : ''}${currentSecs} / ${totalMins}:${totalSecs < 10 ? '0' : ''}${totalSecs}`;
+        });
+
+        progressContainer.addEventListener('click', (e) => {
+            const rect = progressContainer.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            video.currentTime = pos * video.duration;
+        });
+
+    </script>
+</body>
+</html>
