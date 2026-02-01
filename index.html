@@ -312,14 +312,14 @@
     <!-- HERO SECTION -->
     <section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-start pt-36 md:pt-44 pb-12 overflow-hidden bg-deepSpace">
         
-        <!-- Mobile Background (CORRIGIDO: Altura em viewport units para evitar zoom excessivo, gradient reduzido) -->
-        <div id="mobile-hero-bg" class="absolute top-0 left-0 w-full h-[110vh] bg-[url('https://i.imgur.com/ph6deoC.png')] bg-cover bg-top bg-no-repeat z-0 md:hidden opacity-60 blur-[1px] pointer-events-none"></div>
+        <!-- Mobile Background (CORRIGIDO: Altura em % relativa ao pai para cobrir seção inteira, desfoque e degradê ajustados) -->
+        <div id="mobile-hero-bg" class="absolute -top-20 left-0 w-full h-[120%] bg-[url('https://i.imgur.com/ph6deoC.png')] bg-cover bg-center bg-no-repeat z-0 md:hidden opacity-50 blur-[2px] pointer-events-none"></div>
         
         <!-- Desktop Background (Attachment Fixed for Parallax) -->
         <div class="absolute inset-0 w-full h-full bg-[url('https://i.imgur.com/X3KJDIB.png')] bg-cover bg-center bg-no-repeat bg-fixed z-0 hidden md:block opacity-50 blur-[2px]"></div>
 
-        <!-- Gradient Overlay (Suavizado para revelar fundo da imagem no mobile) -->
-        <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/40 to-transparent z-0 pointer-events-none"></div>
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/80 to-transparent z-0 pointer-events-none"></div>
         
         <!-- PARTICLE ANIMATION BACKGROUND -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none z-0" id="hero-particles"></div>
