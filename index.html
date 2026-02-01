@@ -40,9 +40,8 @@
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-glow': 'pulse-glow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'infinite-scroll': 'infinite-scroll 60s linear infinite', 
                         'beam-rotate': 'beam-rotate 20s linear infinite',
-                        'breathe': 'breathe 4s ease-in-out infinite',
+                        'particle-rise': 'particleRise 15s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -53,17 +52,15 @@
                             '0%, 100%': { opacity: 0.8, filter: 'brightness(1)' },
                             '50%': { opacity: 0.4, filter: 'brightness(1.5)' },
                         },
-                        'infinite-scroll': {
-                            '0%': { transform: 'translateX(0)' },
-                            '100%': { transform: 'translateX(-50%)' },
-                        },
                         'beam-rotate': {
                             '0%': { transform: 'rotate(0deg)' },
                             '100%': { transform: 'rotate(360deg)' },
                         },
-                        breathe: {
-                            '0%, 100%': { textShadow: '0 0 10px rgba(255,255,255,0.1)', opacity: '0.9' },
-                            '50%': { textShadow: '0 0 25px rgba(255,255,255,0.4)', opacity: '1' }
+                        particleRise: {
+                            '0%': { transform: 'translateY(100vh) scale(0.5)', opacity: '0' },
+                            '20%': { opacity: '0.6' },
+                            '80%': { opacity: '0.6' },
+                            '100%': { transform: 'translateY(-20vh) scale(1.2)', opacity: '0' }
                         }
                     }
                 }
@@ -82,10 +79,10 @@
 
         /* Image Protection */
         img {
-            pointer-events: none; /* Prevents dragging image itself */
-            -webkit-touch-callout: none; /* Prevents long press menu on iOS */
-            -webkit-user-drag: none; /* Prevents drag on Webkit */
-            user-select: none; /* Prevents selection */
+            pointer-events: none;
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
+            user-select: none;
         }
 
         .halftone-bg {
@@ -113,29 +110,6 @@
             border-color: rgba(188, 19, 254, 0.5);
             box-shadow: 0 0 30px rgba(188, 19, 254, 0.15);
             transform: translateY(-5px);
-        }
-
-        @keyframes textShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        .text-animated-gradient {
-            background: linear-gradient(
-                to right,
-                #00F0FF 20%,
-                #bc13fe 40%,
-                #FF0055 60%,
-                #FFD700 80%,
-                #00F0FF 100%
-            );
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: textShine 4s linear infinite;
-            display: inline-block;
-            filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
         }
 
         .hero-vortex {
@@ -227,47 +201,44 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #bc13fe; }
 
-        /* Standard Overlay for Mobile Legibility */
+        /* CARDS HOVER LOGIC - UNIFIED FOR MOBILE & DESKTOP */
         .comic-overlay {
             background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+            opacity: 0; 
+            transition: opacity 0.3s ease;
         }
         
-        /* Desktop Hover Effects (Only on devices with hover) */
-        @media (min-width: 768px) {
-            /* Initial state for desktop: Hidden overlay */
-            .comic-overlay {
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-            
-            /* The Container */
-            .comic-card-container {
-                transition: transform 0.3s ease, border-color 0.3s ease;
-            }
-
-            /* On Hover: Show Overlay */
-            .comic-card-container:hover .comic-overlay {
-                opacity: 1;
-            }
-
-            /* On Hover: Elevate Card */
-            .comic-card-container:hover {
-                transform: translateY(-10px);
-                z-index: 20;
-            }
-
-            /* Specific Glows */
-            .comic-card-container.marvel:hover { border-color: #FF0055; box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3); }
-            .comic-card-container.dc:hover { border-color: #00F0FF; box-shadow: 0 10px 20px rgba(0, 240, 255, 0.3); }
+        .comic-card-container {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            outline: none; /* Remove default tap highlight/border */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .hide-scroll::-webkit-scrollbar {
-            display: none;
+        /* Hover State (Desktop MouseOver) AND Focus/Tap State (Mobile) */
+        .comic-card-container:hover, 
+        .comic-card-container:focus { 
+            opacity: 1;
+            transform: translateY(-10px); 
+            z-index: 20; 
         }
-        .hide-scroll {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        
+        .comic-card-container:hover .comic-overlay,
+        .comic-card-container:focus .comic-overlay {
+            opacity: 1;
         }
+
+        /* Brand Colors on Hover/Focus */
+        .comic-card-container.marvel:hover, .comic-card-container.marvel:focus { 
+            box-shadow: 0 10px 20px rgba(255, 0, 85, 0.3); 
+            border-color: #FF0055; 
+        }
+        .comic-card-container.dc:hover, .comic-card-container.dc:focus { 
+            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.3); 
+            border-color: #00F0FF; 
+        }
+
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Custom Video Player Styles */
         .video-progress-filled {
@@ -292,6 +263,16 @@
         }
         .group:hover .video-progress-thumb {
             opacity: 1;
+        }
+
+        /* Particle Animation Class */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            animation: particleRise 10s linear infinite;
         }
     </style>
 </head>
@@ -331,9 +312,13 @@
     <!-- HERO SECTION -->
     <section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-start pt-36 md:pt-44 pb-12 overflow-hidden bg-deepSpace">
         <div class="absolute inset-0 z-0">
-            <!-- Responsive Background Image -->
-            <div class="absolute inset-0 bg-[url('https://i.imgur.com/vLxr3Wm.png')] md:bg-[url('https://i.imgur.com/WBY2Bl9.png')] bg-cover bg-center bg-fixed opacity-40 mix-blend-overlay blur-[2px]"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/90 to-deepSpace/40"></div>
+            <!-- BACKGROUND WALLPAPER FIX -->
+            <!-- Mobile Image explicitly set with bg-fixed for Parallax -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed bg-[url('https://i.imgur.com/vLxr3Wm.png')] md:bg-[url('https://i.imgur.com/WBY2Bl9.png')] opacity-50 mix-blend-overlay blur-[2px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/80 to-deepSpace/30"></div>
+            
+            <!-- PARTICLE ANIMATION BACKGROUND -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none" id="hero-particles"></div>
         </div>
 
         <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-0">
@@ -367,7 +352,7 @@
             </div>
 
             <p class="text-gray-400 text-lg md:text-xl max-w-xl mx-auto mb-8 leading-relaxed font-light">
-                Marvel Completa, DC Comics, HQs variadas e muito mais! Tudo organizado e em alta qualidade!
+                Esqueça os scans ruins. Mergulhe em um acervo com qualidade 4K, organizado cronologicamente e 100% em português.
             </p>
 
             <div class="flex flex-col sm:flex-row items-center gap-6 relative z-50 pb-4">
@@ -515,7 +500,7 @@
             </div>
             
             <div class="relative group rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-electricCyan/10 bg-black h-[650px] md:h-[800px]" id="video-container">
-                <video class="w-full h-full object-cover" id="app-video" playsinline poster="https://i.imgur.com/K5JNB4T.mp4?#t=0.1">
+                <video class="w-full h-full object-cover" id="app-video" playsinline autoplay muted loop poster="https://i.imgur.com/K5JNB4T.mp4?#t=0.1">
                     <source src="https://i.imgur.com/K5JNB4T.mp4" type="video/mp4">
                     Seu navegador não suporta a tag de vídeo.
                 </video>
@@ -584,7 +569,7 @@
         </div>
     </section>
 
-    <!-- Scrollable & Draggable Highlights (JS Controlled) -->
+    <!-- Scrollable & Draggable Highlights (JS Controlled - Smooth) -->
     <section class="py-20 bg-gradient-to-b from-deepSpace to-[#0a0510] border-t border-white/5 overflow-hidden">
         <div class="w-[92%] max-w-6xl mx-auto mb-12 text-center">
             <span class="text-vibrantMagenta font-bold tracking-widest text-sm uppercase">Destaques do Mês</span>
@@ -593,7 +578,8 @@
         </div>
 
         <div class="w-[92%] max-w-6xl mx-auto overflow-hidden relative group rounded-xl" id="highlights-wrapper">
-            <div id="highlights-track" class="flex gap-6 py-8 px-4 w-full overflow-x-auto hide-scroll cursor-grab active:cursor-grabbing">
+            <!-- IMPORTANT: overflow-x-hidden here to be controlled by JS, flex row -->
+            <div id="highlights-track" class="flex gap-6 py-8 px-4 w-full overflow-x-hidden cursor-grab active:cursor-grabbing select-none">
                <!-- Content injected via JS -->
             </div>
             <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-deepSpace to-transparent pointer-events-none"></div>
@@ -655,7 +641,7 @@
                         <li class="flex items-center gap-3"><i class="ph-bold ph-x-circle text-red-500 text-lg"></i> <span class="opacity-50 line-through">Atualizações Diárias</span></li>
                         <li class="flex items-center gap-3"><i class="ph-bold ph-x-circle text-red-500 text-lg"></i> <span class="opacity-50 line-through">Suporte Prioritário</span></li>
                      </ul>
-                     <a href="#" class="block w-full py-3 rounded-lg border border-white/20 text-white text-center font-bold hover:bg-white/10 transition-all uppercase tracking-wider text-sm">Assinar Mensal</a>
+                     <button onclick="openDiscountPopup()" class="block w-full py-3 rounded-lg border border-white/20 text-white text-center font-bold hover:bg-white/10 transition-all uppercase tracking-wider text-sm">Assinar Mensal</button>
                 </div>
 
                 <!-- Omniverso Plan (Highlight) -->
@@ -679,9 +665,9 @@
                         <li class="flex items-center gap-3"><i class="ph-fill ph-check-circle text-electricCyan text-lg"></i> +50.000 HQs</li>
                      </ul>
                      <!-- Pricing Button with Shimmer -->
-                     <button class="shimmer-effect w-full py-4 bg-gradient-to-r from-goldenAge to-amber-600 rounded-lg text-black font-black text-lg uppercase tracking-wider shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group">
+                     <a href="https://pay.cakto.com.br/3buxkjg" class="shimmer-effect w-full py-4 bg-gradient-to-r from-goldenAge to-amber-600 rounded-lg text-black font-black text-lg uppercase tracking-wider shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group">
                         Adquirir Agora <i class="ph-bold ph-lightning group-hover:animate-pulse"></i>
-                     </button>
+                     </a>
                      <p class="text-center text-xs text-gray-500 mt-4">*Sem taxas adicionais. Pague uma vez, use para sempre.</p>
                 </div>
 
@@ -842,6 +828,30 @@
         </div>
     </footer>
 
+    <!-- Discount Popup -->
+    <div id="discount-popup" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-deepSpace border border-goldenAge/50 rounded-2xl p-8 max-w-md w-[90%] text-center shadow-[0_0_50px_rgba(255,215,0,0.2)] transform scale-95 transition-all duration-300 relative" id="discount-content">
+            <button onclick="closeDiscountPopup()" class="absolute top-3 right-3 text-gray-500 hover:text-white transition-colors">
+                <i class="ph-bold ph-x text-xl"></i>
+            </button>
+            <div class="w-16 h-16 bg-goldenAge/20 rounded-full flex items-center justify-center mx-auto mb-4 text-goldenAge">
+                <i class="ph-fill ph-confetti text-3xl"></i>
+            </div>
+            <h3 class="font-display font-bold text-2xl text-white mb-2">Oferta Relâmpago!</h3>
+            <p class="text-gray-300 text-sm mb-6">
+                Não pague mensalidade! Leve o acesso <span class="text-goldenAge font-bold">VITALÍCIO</span> por apenas <span class="text-white font-bold text-lg">R$ 19,90</span>.
+            </p>
+            
+            <a href="https://pay.cakto.com.br/5kypmq2" class="block w-full py-3 bg-goldenAge text-black font-black uppercase rounded-lg mb-3 hover:scale-105 transition-transform shadow-lg shadow-yellow-500/20">
+                QUERO GARANTIR ESSE DESCONTO
+            </a>
+            
+            <a href="https://pay.cakto.com.br/cgi5bm7_749975" class="text-gray-500 text-xs hover:text-white transition-colors underline decoration-gray-700 hover:decoration-white">
+                Prefiro perder esse desconto :(
+            </a>
+        </div>
+    </div>
+
     <script>
         // Custom Context Menu Logic
         const contextMenu = document.getElementById('context-menu');
@@ -905,90 +915,99 @@
             }, 300);
         }
 
-        // --- INFINITE DRAGGABLE SCROLL CLASS ---
-        class InfiniteDraggableScroll {
-            constructor(trackId, data, renderFn, speed = 0.5) {
+        // --- COMPLETELY REWRITTEN SMOOTH SCROLL CLASS ---
+        class SmoothInfiniteScroll {
+            constructor(trackId, data, renderFn, speed = 0.8) {
                 this.track = document.getElementById(trackId);
                 this.data = data;
                 this.renderFn = renderFn;
                 this.speed = speed;
                 
                 this.isDragging = false;
+                this.isPaused = false; // New state to track pause
                 this.startX = 0;
-                this.scrollLeft = 0;
-                this.animationId = null;
+                this.currentScroll = 0;
+                this.targetScroll = 0;
+                this.maxScroll = 0;
+                this.rafId = null;
                 
                 this.init();
             }
 
             init() {
-                // Populate track with 4x duplication for infinite effect
+                // Duplicate content multiple times for seamless infinity
                 const content = this.data.map(this.renderFn).join('');
-                this.track.innerHTML = content + content + content + content;
+                this.track.innerHTML = content + content + content + content; // 4x duplication
 
-                // Event Listeners
+                // Wait for layout to calculate dimensions
+                setTimeout(() => {
+                    this.maxScroll = this.track.scrollWidth / 4; // 1 set width
+                }, 100);
+
+                // Mouse Events
                 this.track.addEventListener('mousedown', (e) => this.startDrag(e));
-                
-                // Stop scrolling immediately on mouse enter
-                this.track.addEventListener('mouseenter', () => this.stopAutoScroll());
-                
-                // Restart only if not dragging when leaving
+                this.track.addEventListener('mouseenter', () => this.isPaused = true); // Pause on hover
                 this.track.addEventListener('mouseleave', () => {
-                    this.isDragging = false;
-                    this.track.classList.remove('cursor-grabbing');
-                    this.startAutoScroll();
+                    this.isPaused = false;
+                    this.isMouseDown = false;
                 });
-                
                 this.track.addEventListener('mouseup', () => this.endDrag());
                 this.track.addEventListener('mousemove', (e) => this.drag(e));
                 
-                // Touch support
-                this.track.addEventListener('touchstart', () => this.stopAutoScroll());
-                this.track.addEventListener('touchend', () => this.startAutoScroll());
+                // Touch Events
+                this.track.addEventListener('touchstart', (e) => this.startDrag(e), { passive: true });
+                this.track.addEventListener('touchend', () => this.endDrag());
+                this.track.addEventListener('touchmove', (e) => this.drag(e), { passive: false }); // Prevent default only when horizontal
 
-                this.startAutoScroll();
+                this.animate();
             }
 
-            startAutoScroll() {
-                const animate = () => {
-                    if (!this.isDragging) {
-                        this.track.scrollLeft += this.speed;
-                        // Seamless Loop Reset: When scrolled past 1/4 (first set), snap back
-                        if (this.track.scrollLeft >= this.track.scrollWidth / 4) {
-                            this.track.scrollLeft -= this.track.scrollWidth / 4;
-                        }
-                    }
-                    this.animationId = requestAnimationFrame(animate);
-                };
-                cancelAnimationFrame(this.animationId);
-                animate();
-            }
+            animate() {
+                if (!this.isMouseDown && !this.isPaused) {
+                    // Auto scroll logic
+                    this.track.scrollLeft += this.speed;
+                }
 
-            stopAutoScroll() {
-                cancelAnimationFrame(this.animationId);
+                // Seamless Loop Logic
+                if (this.track.scrollLeft >= this.maxScroll * 2) {
+                     this.track.scrollLeft -= this.maxScroll;
+                } else if (this.track.scrollLeft <= 0) {
+                     this.track.scrollLeft += this.maxScroll;
+                }
+
+                this.rafId = requestAnimationFrame(() => this.animate());
             }
 
             startDrag(e) {
-                this.isDragging = true;
-                this.track.classList.add('cursor-grabbing');
-                this.startX = e.pageX - this.track.offsetLeft;
-                this.scrollLeft = this.track.scrollLeft;
-                this.stopAutoScroll();
+                this.isMouseDown = true;
+                const pageX = e.pageX || (e.touches ? e.touches[0].pageX : 0);
+                this.startX = pageX;
+                this.startScrollLeft = this.track.scrollLeft;
             }
 
             endDrag() {
-                if (!this.isDragging) return;
-                this.isDragging = false;
-                this.track.classList.remove('cursor-grabbing');
-                this.startAutoScroll();
+                this.isMouseDown = false;
             }
 
             drag(e) {
-                if (!this.isDragging) return;
-                e.preventDefault();
-                const x = e.pageX - this.track.offsetLeft;
-                const walk = (x - this.startX) * 2; // Drag multiplier
-                this.track.scrollLeft = this.scrollLeft - walk;
+                if (!this.isMouseDown) return;
+                
+                const pageX = e.pageX || (e.touches ? e.touches[0].pageX : 0);
+                const x = pageX;
+                const walk = (x - this.startX) * 1.5; // Drag sensitivity
+                
+                // Check if moving horizontally primarily (for mobile swipe handling)
+                if (e.touches) {
+                    const diffX = Math.abs(x - this.startX);
+                    // If we are scrolling purely horizontally, prevent default vertical scroll
+                    if(diffX > 5) {
+                         if(e.cancelable) e.preventDefault();
+                    }
+                } else {
+                     e.preventDefault();
+                }
+
+                this.track.scrollLeft = this.startScrollLeft - walk;
             }
         }
 
@@ -1007,11 +1026,11 @@
         ];
 
         const renderHighlightCard = (item) => `
-            <div class="w-56 md:w-64 flex-none relative aspect-[2/3] rounded-lg overflow-hidden border border-white/10 shadow-lg cursor-pointer comic-card-container ${item.cat.includes('Marvel') ? 'marvel' : 'dc'}">
+            <div class="w-40 h-60 md:w-64 md:h-96 flex-none relative rounded-lg overflow-hidden border border-white/10 shadow-lg cursor-pointer comic-card-container ${item.cat.includes('Marvel') ? 'marvel' : 'dc'}" tabindex="0">
                 <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover select-none pointer-events-none">
-                <div class="absolute inset-0 flex flex-col justify-end p-6 comic-overlay">
-                    <span class="${item.cat.includes('Marvel') ? 'text-vibrantMagenta' : 'text-electricCyan'} text-xs font-bold uppercase tracking-widest mb-1">${item.cat}</span>
-                    <h3 class="font-bold text-white text-xl leading-tight">${item.title}</h3>
+                <div class="absolute inset-0 flex flex-col justify-end p-4 md:p-6 comic-overlay">
+                    <span class="${item.cat.includes('Marvel') ? 'text-vibrantMagenta' : 'text-electricCyan'} text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1">${item.cat}</span>
+                    <h3 class="font-bold text-white text-lg md:text-xl leading-tight">${item.title}</h3>
                 </div>
             </div>
         `;
@@ -1103,8 +1122,9 @@
             container.addEventListener('mouseleave', () => startTimer());
         }
 
-        // Initialize Scrolls
-        new InfiniteDraggableScroll('highlights-track', highlightsData, renderHighlightCard, 0.5);
+        // Initialize Scrolls with correct params
+        // Lower speed for readability, high smoothness
+        new SmoothInfiniteScroll('highlights-track', highlightsData, renderHighlightCard, 1.0);
         initTestimonialCarousel();
 
         // Custom Video Controls Script
@@ -1121,6 +1141,26 @@
         // End CTA Elements
         const endCta = document.getElementById('video-end-cta');
         const replayBtn = document.getElementById('replay-btn');
+
+        // Force Autoplay logic for Attract Mode
+        video.muted = true;
+        video.loop = true;
+        // Try to play immediately
+        video.play().catch(e => console.log("Autoplay muted blocked:", e));
+
+        function handleMainInteraction() {
+            // Attract Mode: If muted and playing, restart and unmute
+            if (video.muted && !video.paused) {
+                video.currentTime = 0;
+                video.muted = false;
+                video.loop = false;
+                videoOverlay.classList.add('opacity-0', 'pointer-events-none');
+                playPauseBtn.innerHTML = '<i class="ph-fill ph-pause text-xl"></i>';
+                muteBtn.innerHTML = '<i class="ph-fill ph-speaker-high text-xl"></i>';
+            } else {
+                togglePlay();
+            }
+        }
 
         function togglePlay() {
             if (video.paused) {
@@ -1140,8 +1180,8 @@
         }
 
         // Toggle play on overlay click AND video click
-        videoOverlay.addEventListener('click', togglePlay);
-        video.addEventListener('click', togglePlay);
+        videoOverlay.addEventListener('click', handleMainInteraction);
+        video.addEventListener('click', handleMainInteraction); // Clicks on the video itself
         playPauseBtn.addEventListener('click', togglePlay);
 
         // Show CTA on End
@@ -1200,6 +1240,53 @@
             const rect = progressContainer.getBoundingClientRect();
             const pos = (e.clientX - rect.left) / rect.width;
             video.currentTime = pos * video.duration;
+        });
+
+        // PARTICLE SYSTEM LOGIC
+        const heroParticles = document.getElementById('hero-particles');
+        const particleCount = 20;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Random properties
+            const size = Math.random() * 3 + 1; // 1px to 4px
+            const left = Math.random() * 100; // 0% to 100%
+            const duration = Math.random() * 10 + 10; // 10s to 20s
+            const delay = Math.random() * 5; // 0s to 5s
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}%`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            heroParticles.appendChild(particle);
+        }
+
+        // --- DISCOUNT POPUP LOGIC ---
+        function openDiscountPopup() {
+            const popup = document.getElementById('discount-popup');
+            const content = document.getElementById('discount-content');
+            popup.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+
+        function closeDiscountPopup() {
+            const popup = document.getElementById('discount-popup');
+            const content = document.getElementById('discount-content');
+            popup.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.add('scale-95');
+            content.classList.remove('scale-100');
+        }
+
+        // Close when clicking outside
+        document.getElementById('discount-popup').addEventListener('click', (e) => {
+            if(e.target === document.getElementById('discount-popup')) {
+                closeDiscountPopup();
+            }
         });
 
     </script>
