@@ -311,15 +311,18 @@
 
     <!-- HERO SECTION -->
     <section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-start pt-36 md:pt-44 pb-12 overflow-hidden bg-deepSpace">
-        <div class="absolute inset-0 z-0">
-            <!-- BACKGROUND WALLPAPER FIX -->
-            <!-- Mobile Image explicitly set with bg-fixed for Parallax -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed bg-[url('https://i.imgur.com/vLxr3Wm.png')] md:bg-[url('https://i.imgur.com/WBY2Bl9.png')] opacity-50 mix-blend-overlay blur-[2px]"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/80 to-deepSpace/30"></div>
-            
-            <!-- PARTICLE ANIMATION BACKGROUND -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none" id="hero-particles"></div>
-        </div>
+        
+        <!-- Mobile Background (Fixed for robust Parallax) -->
+        <div class="fixed inset-0 w-full h-full bg-[url('https://i.imgur.com/vLxr3Wm.png')] bg-cover bg-center bg-no-repeat z-0 md:hidden opacity-60"></div>
+        
+        <!-- Desktop Background (Attachment Fixed for Parallax) -->
+        <div class="absolute inset-0 w-full h-full bg-[url('https://i.imgur.com/WBY2Bl9.png')] bg-cover bg-center bg-no-repeat bg-fixed z-0 hidden md:block opacity-60"></div>
+
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-deepSpace via-deepSpace/80 to-transparent z-0 pointer-events-none"></div>
+        
+        <!-- PARTICLE ANIMATION BACKGROUND -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0" id="hero-particles"></div>
 
         <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-0">
             <div class="w-[150vw] h-[150vw] hero-vortex opacity-20"></div>
@@ -352,7 +355,7 @@
             </div>
 
             <p class="text-gray-400 text-lg md:text-xl max-w-xl mx-auto mb-8 leading-relaxed font-light">
-                Esqueça os scans ruins. Mergulhe em um acervo com qualidade 4K, organizado cronologicamente e 100% em português.
+                Marvel Completa, DC Comics, HQs variadas e muito mais!!! Tudo organizado e em alta qualidade!
             </p>
 
             <div class="flex flex-col sm:flex-row items-center gap-6 relative z-50 pb-4">
